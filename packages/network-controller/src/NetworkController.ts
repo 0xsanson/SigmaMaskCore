@@ -497,7 +497,16 @@ export const defaultState: NetworkState = {
     ticker: NetworksTicker.mainnet,
   },
   networksMetadata: {},
-  networkConfigurations: {},
+  networkConfigurations: {
+    networkConfigurationId: {
+      chainId: 1337,
+      nickname: 'Localhost 8545',
+      rpcPrefs: {},
+      rpcUrl: 'http://localhost:8545',
+      ticker: 'ETH',
+      id: 'networkConfigurationId',
+    },
+  },
 };
 
 type MetaMetricsEventPayload = {
@@ -986,15 +995,15 @@ export class NetworkController extends BaseController<
    * removed in a future release
    */
   async setProviderType(type: InfuraNetworkType) {
-    assert.notStrictEqual(
-      type,
-      NetworkType.rpc,
-      `NetworkController - cannot call "setProviderType" with type "${NetworkType.rpc}". Use "setActiveNetwork"`,
-    );
-    assert.ok(
-      isInfuraNetworkType(type),
-      `Unknown Infura provider type "${type}".`,
-    );
+    //assert.notStrictEqual(
+    //  type,
+    //  NetworkType.rpc,
+    //  `NetworkController - cannot call "setProviderType" with type "${NetworkType.rpc}". Use "setActiveNetwork"`,
+    //);
+    //assert.ok(
+    //  isInfuraNetworkType(type),
+    //  `Unknown Infura provider type "${type}".`,
+    //);
 
     await this.setActiveNetwork(type);
   }

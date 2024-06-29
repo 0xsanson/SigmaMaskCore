@@ -43,8 +43,7 @@ export function isNetworkType(val: string): val is NetworkType {
 export function isInfuraNetworkType(
   value: unknown,
 ): value is InfuraNetworkType {
-  const infuraNetworkTypes: unknown[] = Object.keys(InfuraNetworkType);
-  return infuraNetworkTypes.includes(value);
+  return false;
 }
 
 /**

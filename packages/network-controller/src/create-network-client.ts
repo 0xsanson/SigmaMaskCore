@@ -54,19 +54,12 @@ export type NetworkClient = {
 export function createNetworkClient(
   networkConfig: NetworkClientConfiguration,
 ): NetworkClient {
-  const rpcApiMiddleware =
-    networkConfig.type === NetworkClientType.Infura
-      ? createInfuraMiddleware({
-          network: networkConfig.network,
-          projectId: networkConfig.infuraProjectId,
-          maxAttempts: 5,
-          source: 'metamask',
-        })
-      : createFetchMiddleware({
-          btoa: global.btoa,
-          fetch: global.fetch,
-          rpcUrl: networkConfig.rpcUrl,
-        });
+  if (networkConfig.type === NetworkClientType.Infura) console.log("SIGMA: createNetworkClient: infura");
+  const rpcApiMiddleware = createFetchMiddleware({
+    btoa: global.btoa,
+    fetch: global.fetch,
+    rpcUrl: (networkConfig as any).rpcUrl,
+  });
 
   const rpcProvider = providerFromMiddleware(rpcApiMiddleware);
 
@@ -80,19 +73,11 @@ export function createNetworkClient(
     provider: rpcProvider,
   });
 
-  const networkMiddleware =
-    networkConfig.type === NetworkClientType.Infura
-      ? createInfuraNetworkMiddleware({
-          blockTracker,
-          network: networkConfig.network,
-          rpcProvider,
-          rpcApiMiddleware,
-        })
-      : createCustomNetworkMiddleware({
-          blockTracker,
-          chainId: networkConfig.chainId,
-          rpcApiMiddleware,
-        });
+  const networkMiddleware = createCustomNetworkMiddleware({
+    blockTracker,
+    chainId: networkConfig.chainId,
+    rpcApiMiddleware,
+  });
 
   const engine = new JsonRpcEngine();
 
